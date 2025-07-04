@@ -16,17 +16,32 @@ def read_config() -> None:
         config = json.load(r_file)
 
 
-@app.command()
-def add(task: str) -> None:
+@app.command(short_help="Add a new task.")
+def add(data: str) -> None:
+    task = {"name": data, "status": "pending"}
     config["tasks"].append(task)
     write_config(config)
-    print(config["tasks"])
 
 
-@app.command()
+@app.command(short_help="Show all the tasks.")
 def show() -> None:
     for index, task in enumerate(config["tasks"], 1):
-        print(f"\n{index}. {task}")
+        print(f"{index}. {task}\n")
+
+
+@app.command(short_help="Delete a task.")
+def remove(index: int):
+    index = index - 1
+
+    if len(config["tasks"]) == 0:
+        print("\nOops, the list is empty.")
+    # elif index >= 0 and index < len(config["tasks"]):
+    elif not 0 <= index < len(config["tasks"]):
+        print(f"Please select a valid number between (1 - {len(config["tasks"])})")
+    else:
+        del config["tasks"][index]
+        write_config(config)
+        print("\nTask deleted successfully!\n")
 
 
 @app.command(short_help="Reset all and initialize new setup.")
