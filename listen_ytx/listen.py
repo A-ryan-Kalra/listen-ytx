@@ -16,12 +16,26 @@ def read_config() -> None:
         config = json.load(r_file)
 
 
-@app.command(short_help="Reset all and initialize new setup.")
-def setup():
+@app.command()
+def add(task: str) -> None:
+    config["tasks"].append(task)
+    write_config(config)
+    print(config["tasks"])
 
-    global config
+
+@app.command()
+def show() -> None:
+    for index, task in enumerate(config["tasks"], 1):
+        print(f"\n{index}. {task}")
+
+
+@app.command(short_help="Reset all and initialize new setup.")
+def setup_file():
+
     config = {}
     config["tasks"] = []
+    config["init_setup_done"] = True
+
     write_config(config)
     # __location__ = os.path.dirname(os.path.realpath(__file__))
 
@@ -42,10 +56,13 @@ def main():
             global config
             config = json.load(config_file)
     except (FileNotFoundError, json.JSONDecodeError):
-        typer.run(setup)
+        typer.run(setup_file)
 
     else:
-        app()
+        if "init_setup_done" in config and config["init_setup_done"] is True:
+            app()
+        else:
+            typer.run(setup_file)
 
 
 main()
