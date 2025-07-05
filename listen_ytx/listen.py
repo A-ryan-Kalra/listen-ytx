@@ -10,6 +10,10 @@ def write_config(data: dict) -> None:
         json.dump(data, w_file, indent=2)
 
 
+def is_valid_index(index):
+    return 0 <= index < len(config["tasks"])
+
+
 def read_config() -> None:
     global config
     with open(config_file_path) as r_file:
@@ -33,10 +37,10 @@ def show() -> None:
 def do(index: int) -> None:
     index = index - 1
     if len(config["tasks"]) == 0:
-        print("\nOops, list is empty.\n")
+        print("\nOops, the list is empty.\n")
         return
 
-    if 0 <= index < len(config["tasks"]):
+    if is_valid_index(index):
         if config["tasks"][index]["status"] == "completed":
             print("\nTask is already done!\n")
         else:
@@ -47,13 +51,36 @@ def do(index: int) -> None:
         print(f"Please select a valid number between (1 - {len(config["tasks"])})")
 
 
+@app.command(short_help="Replace the old position of the task with the new one.")
+def move(old_index: int, new_index: int) -> None:
+    old_index, new_index = old_index - 1, new_index - 1
+
+    if len(config["tasks"]) == 0:
+        print("\nOops, the list is empty\n")
+        return
+
+    elif is_valid_index(old_index) and is_valid_index(new_index):
+        if old_index == new_index:
+            print("\nThe task is already at that position. Nothing to move!")
+            return
+        else:
+            config["tasks"][old_index], config["tasks"][new_index] = (
+                config["tasks"][new_index],
+                config["tasks"][old_index],
+            )
+            write_config(config)
+            print("\n The task is replaced succesfully\n")
+    else:
+        print(f"Please select a valid number between (1 - {len(config["tasks"])})")
+
+
 @app.command(short_help="Undo a task by its number.")
 def undo(index: int) -> None:
     index = index - 1
     if config["tasks"] == 0:
-        print("\nOops, list is empty.\n")
+        print("\nOops, the list is empty.\n")
         return
-    elif 0 <= index < len(config["tasks"]):
+    elif is_valid_index(index):
         if config["tasks"][index]["status"] == "pending":
             print("\nThe task is already pending.\n")
         else:
@@ -72,7 +99,7 @@ def remove(index: int) -> None:
     if len(config["tasks"]) == 0:
         print("\nOops, the list is empty.")
 
-    elif not 0 <= index < len(config["tasks"]):
+    elif not is_valid_index(index):
         print(f"Please select a valid number between (1 - {len(config["tasks"])})")
     else:
         del config["tasks"][index]
