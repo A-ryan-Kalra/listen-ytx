@@ -7,6 +7,7 @@ from rich.align import Align
 from rich import print
 import shutil
 from rich.markdown import Markdown
+from datetime import datetime
 
 app = typer.Typer()
 console = Console()
@@ -221,7 +222,7 @@ def setup_file():
     md = Markdown(MARKDOWN)
     print(md, "\n")
     write_config(config)
-    initialize()
+    # initialize()
     # __location__ = os.path.dirname(os.path.realpath(__file__))
 
     # config["location"] = __location__
@@ -230,8 +231,18 @@ def setup_file():
 
 @app.callback(invoke_without_command=True)
 def initialize():
+    global config
+    username = config["username"]
+    width = shutil.get_terminal_size().columns
+    now = datetime.now()
+    formatted = now.strftime("%d-%B-%Y | %I:%M %p")
 
-    print("Initialize")
+    console.rule(
+        f"[yellow bold] Hey [magenta bold]{username}![/] It's [cyan bold]{formatted}[/][/] ",
+        style="yellow bold",
+        align="center",
+    )
+    show()
 
     # else:
 
