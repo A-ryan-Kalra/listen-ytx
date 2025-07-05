@@ -1,8 +1,13 @@
 import typer, os
 from os.path import expanduser
 import json
+from rich.console import Console
+from rich.table import Table
+from rich.align import Align
+import shutil
 
 app = typer.Typer()
+console = Console()
 
 
 def write_config(data: dict) -> None:
@@ -12,6 +17,20 @@ def write_config(data: dict) -> None:
 
 def is_valid_index(index):
     return 0 <= index < len(config["tasks"])
+
+
+def center_print(text):
+
+    width = int(shutil.get_terminal_size().columns)
+    console.print(
+        Align.center(
+            text,
+            width=width,
+            style="#c335d6",
+        ),
+        no_wrap=True,
+        # width=int(shutil.get_terminal_size().columns / 2),
+    )
 
 
 def read_config() -> None:
@@ -29,8 +48,28 @@ def add(data: str) -> None:
 
 @app.command(short_help="Show all the tasks.")
 def show() -> None:
-    for index, task in enumerate(config["tasks"], 1):
-        print(f"{index}. {task}\n")
+    all_tasks = config["tasks"]
+    table = Table(title="Tasks", header_style="#efefef", title_style="#efefef bold")
+
+    table.add_column(
+        "No.",
+        style="bold #a3a8a7",
+        justify="center",
+    )
+    table.add_column(
+        "Tasks",
+        style="#35d6d6",
+        #  min_width=50,
+        justify="center",
+    )
+    table.add_column(
+        "Status",
+        style="magenta",
+    )
+
+    for index, task in enumerate(all_tasks, 1):
+        table.add_row(f"{index}", task["name"], task["status"])
+    center_print(table)
 
 
 @app.command(short_help="Complete a task by its number.")
