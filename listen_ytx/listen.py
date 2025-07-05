@@ -4,13 +4,15 @@ import json
 from rich.console import Console
 from rich.table import Table
 from rich.align import Align
+from rich import print
 import shutil
+from rich.markdown import Markdown
 
 app = typer.Typer()
 console = Console()
 
 STYLE_SUCCESS = "#efefef bold on green"
-STYLE_WARNING = "bright_blue on bright_black"
+STYLE_WARNING = "bright_blue on blue"
 STYLE_NORMAL = "green on black"
 
 
@@ -207,17 +209,36 @@ def setup_file():
 
     config = {}
     config["tasks"] = []
+    config["username"] = input("\nHey there 👋🏻😁, What should I call you?\n")
     config["init_setup_done"] = True
 
+    console.print("\nThank you for letting me know your name!", style="yellow")
+    # print("")
+    MARKDOWN = r"""
+> If you wish to change your name later, you can type:  
+> `listen callme <Your-Name>`
+"""
+    md = Markdown(MARKDOWN)
+    print(md, "\n")
     write_config(config)
+    initialize()
     # __location__ = os.path.dirname(os.path.realpath(__file__))
 
     # config["location"] = __location__
     # print(__location__)
 
 
+@app.callback(invoke_without_command=True)
+def initialize():
+
+    print("Initialize")
+
+    # else:
+
+
 def main():
     # global config_path
+
     config_path = os.path.join(expanduser("~"), ".config", "listen-ytx")
     if not os.path.exists(config_path):
         os.makedirs(config_path)
