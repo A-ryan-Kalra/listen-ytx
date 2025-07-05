@@ -29,7 +29,7 @@ def show() -> None:
         print(f"{index}. {task}\n")
 
 
-@app.command(short_help="Complete a task by its number")
+@app.command(short_help="Complete a task by its number.")
 def do(index: int) -> None:
     index = index - 1
     if len(config["tasks"]) == 0:
@@ -43,6 +43,24 @@ def do(index: int) -> None:
             config["tasks"][index]["status"] = "completed"
             write_config(config)
             print("\nTask completed successfully!\n")
+    else:
+        print(f"Please select a valid number between (1 - {len(config["tasks"])})")
+
+
+@app.command(short_help="Undo a task by its number.")
+def undo(index: int) -> None:
+    index = index - 1
+    if config["tasks"] == 0:
+        print("\nOops, list is empty.\n")
+        return
+    elif 0 <= index < len(config["tasks"]):
+        if config["tasks"][index]["status"] == "pending":
+            print("\nThe task is already pending.\n")
+        else:
+            config["tasks"][index]["status"] = "pending"
+            write_config(config)
+            print("\nTask undone successfully!\n")
+
     else:
         print(f"Please select a valid number between (1 - {len(config["tasks"])})")
 
