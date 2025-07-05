@@ -1,3 +1,4 @@
+import re
 import typer, os
 from os.path import expanduser
 import json
@@ -13,7 +14,7 @@ app = typer.Typer()
 console = Console()
 
 STYLE_SUCCESS = "#efefef bold on green"
-STYLE_WARNING = "bright_blue on blue"
+STYLE_WARNING = "#efefef on dark_blue"
 STYLE_NORMAL = "green on black"
 
 
@@ -51,9 +52,6 @@ def read_config() -> None:
 @app.command(short_help="Show all the tasks.")
 def show() -> None:
     all_tasks = config["tasks"]
-    if len(all_tasks) == 0:
-        center_print("\n[#40c132]Good job, your list is empty... 😄[/]", wrap=True)
-        return
     table = Table(
         title="Tasks",
         header_style="#c6c8bc",
@@ -78,6 +76,11 @@ def show() -> None:
         style="magenta",
         justify="center",
     )
+
+    if len(all_tasks) == 0:
+        center_print(table)
+        center_print("\n[#40c132]Good job, your list is empty... 😄[/]", wrap=True)
+        return
 
     for index, task in enumerate(all_tasks, 1):
         if task["status"] == "pending":
@@ -205,6 +208,29 @@ def remove(index: int) -> None:
         show()
 
 
+@app.command(short_help="Change Your Name")
+def callme(name: str) -> None:
+    config["username"] = name
+    write_config(config)
+    center_print(
+        f"\nSure! Going forward, I will address you as {name} 🦄\n",
+        style="magenta bold",
+    )
+
+
+@app.command(short_help="Clear all the tasks")
+def clearall():
+
+    if len(config["tasks"]) != 0:
+        config["tasks"].clear()
+        center_print("🧹💨 Cleared all tasks.", style=STYLE_WARNING)
+        write_config(config)
+
+    else:
+        # center_print("Oops, the list is empty.", style=STYLE_WARNING)
+        show()
+
+
 @app.command(short_help="Reset all and initialize new setup.")
 def setup_file():
 
@@ -212,7 +238,7 @@ def setup_file():
     config["tasks"] = []
     config["username"] = input("\nHey there 👋🏻😁, What should I call you?\n")
     config["init_setup_done"] = True
-
+    write_config(config)
     console.print("\nThank you for letting me know your name!", style="yellow")
     # print("")
     MARKDOWN = r"""
@@ -220,8 +246,11 @@ def setup_file():
 > `listen callme <Your-Name>`
 """
     md = Markdown(MARKDOWN)
-    print(md, "\n")
-    write_config(config)
+    print(md)
+    console.print(
+        "\nPlease type [cyan bold]'listen'[/] to fetch your list.\n", style=""
+    )
+
     # initialize()
     # __location__ = os.path.dirname(os.path.realpath(__file__))
 
@@ -230,21 +259,22 @@ def setup_file():
 
 
 @app.callback(invoke_without_command=True)
-def initialize():
-    global config
-    username = config["username"]
-    width = shutil.get_terminal_size().columns
-    now = datetime.now()
-    formatted = now.strftime("%d-%B-%Y | %I:%M %p")
+def initialize(ctx: typer.Context):
 
-    console.rule(
-        f"[yellow bold] Hey [magenta bold]{username}![/] It's [cyan bold]{formatted}[/][/] ",
-        style="yellow bold",
-        align="center",
-    )
-    show()
+    if ctx.invoked_subcommand is None:
+        username = re.split(r"[ _-]", config["username"])[0]
+        now = datetime.now()
+        formatted = now.strftime("%d-%B-%Y | %I:%M %p")
 
-    # else:
+        console.rule(
+            f"[yellow bold] Hey [magenta bold]{username}![/] It's [yellow bold]{formatted}[/][/] ",
+            style="yellow bold",
+            align="center",
+        )
+        show()
+
+
+# else:
 
 
 def main():
