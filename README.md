@@ -89,7 +89,7 @@ listen clearall
 Make sure you have Python 3.7+ installed.
 
 ```bash
-pip install listen-ytx
+pip install listen-ytx --upgrade
 # If you see an error saying 'pip not found', just replace 'pip' with 'pip3'.
 
 listen
