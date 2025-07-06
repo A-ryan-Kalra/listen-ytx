@@ -80,7 +80,7 @@ def greet_user(func):
 
 
 @app.command(short_help="Show all the tasks.")
-def show() -> None:
+def lists() -> None:
     all_tasks = config["tasks"]
     table = Table(
         title="Tasks",
@@ -131,9 +131,9 @@ def show() -> None:
     center_print(table)
 
 
-@app.command(short_help="Replace the old position of the task with the new one.")
+@app.command(short_help="Swap the position of the tasks.")
 @greet_user
-def move(old_index: int, new_index: int) -> None:
+def swap(old_index: int, new_index: int) -> None:
 
     old_index, new_index = old_index - 1, new_index - 1
 
@@ -160,7 +160,42 @@ def move(old_index: int, new_index: int) -> None:
             write_config(config)
             center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
 
-            show()
+            lists()
+    else:
+        center_print(
+            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            style=STYLE_WARNING,
+        )
+
+
+@app.command(short_help="Move a task to a specific position in the table.")
+@greet_user
+def move(old_index: int, new_index: int) -> None:
+
+    old_index, new_index = old_index - 1, new_index - 1
+
+    if len(config["tasks"]) == 0:
+        center_print(
+            "Oops, the list is empty.\nUse [green]'add'[/] to add a new task to the lists. 📝",
+            style=STYLE_WARNING,
+            justify="center",
+        )
+        return
+
+    elif is_valid_index(old_index) and is_valid_index(new_index):
+        if old_index == new_index:
+            center_print(
+                "\nThe task is already at that position. Nothing to move!",
+                style=STYLE_WARNING,
+            )
+            return
+        else:
+            move_task = config["tasks"].pop(old_index)
+            config["tasks"].insert(new_index, move_task)
+            write_config(config)
+            center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
+
+            lists()
     else:
         center_print(
             f"Please select a valid number between (1 - {len(config["tasks"])})",
@@ -184,13 +219,13 @@ def do(index: int) -> None:
     if is_valid_index(index):
         if config["tasks"][index]["status"] == "completed":
             center_print("Task is already completed!", style=STYLE_SUCCESS, wrap=True)
-            show()
+            lists()
 
         else:
             config["tasks"][index]["status"] = "completed"
             write_config(config)
             center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
-            show()
+            lists()
     else:
         center_print(
             f"Please select a valid number between (1 - {len(config["tasks"])})",
@@ -213,12 +248,12 @@ def undo(index: int) -> None:
     elif is_valid_index(index):
         if config["tasks"][index]["status"] == "pending":
             center_print("The task is already pending.", style=STYLE_SUCCESS, wrap=True)
-            show()
+            lists()
         else:
             config["tasks"][index]["status"] = "pending"
             write_config(config)
             center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
-            show()
+            lists()
 
     else:
         center_print(
@@ -238,7 +273,7 @@ def add(data: str) -> None:
     task = {"name": data, "status": "pending"}
     config["tasks"].append(task)
     write_config(config)
-    show()
+    lists()
 
 
 @app.command(short_help="Delete a task.")
@@ -265,12 +300,12 @@ def remove(index: int) -> None:
         )
         del config["tasks"][index]
         write_config(config)
-        show()
+        lists()
 
 
-@app.command(short_help="Update a specific task in the list.")
+@app.command(short_help="Edit a specific task in the list.")
 @greet_user
-def update(index: int, text: str) -> None:
+def edit(index: int, text: str) -> None:
 
     index = index - 1
     if not text.strip():
@@ -296,7 +331,7 @@ def update(index: int, text: str) -> None:
         config["tasks"][index]["name"] = text
         write_config(config)
         center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
-        show()
+        lists()
 
 
 @app.command(short_help="Change Your Name")
@@ -319,10 +354,10 @@ def clearall():
         config["tasks"].clear()
         center_print("🧹💨 Cleared all tasks.", style=STYLE_WARNING)
         write_config(config)
-        show()
+        lists()
 
     else:
-        show()
+        lists()
 
 
 @app.command(short_help="Reset all and initialize new setup.")
@@ -332,13 +367,13 @@ def setup_file():
     config["tasks"] = []
     center_print(
         "Welcome to listen-ytx\n[magenta]Your only task manager![/] 📝",
-        style="bold #FFFDD0 on black",
+        style="bold #FFFDD0 on grey11",
         justify="center",
     )
     config["username"] = input(
         "\nHey there! 👋😁\nBefore we proceed, let's start with your name. What should I call you?\n> "
     )
-    console.print("\nThank you for letting me know your name!", style="yellow")
+    console.print("\nThank you for letting me know your name!", style="yellow bold")
 
     while True:
         choice = input(
@@ -361,12 +396,15 @@ def setup_file():
 
     write_config(config)
 
-    MARKDOWN = r"""
-> If you wish to change your name later, you can type:  
-> `listen callme <Your-Name>`
-"""
-    md = Markdown(MARKDOWN)
-    print(md)
+    console.print(
+        "> If you wish to change your name later, you can type:",
+        style="bold grey11",
+    )
+    console.print(
+        '> [bold green]listen callme "Your-Name" [/bold green]',
+        style="bold grey11",
+    )
+
     console.print(
         "\nPlease type [cyan bold]'listen'[/] to fetch your list.\n", style=""
     )
@@ -377,7 +415,7 @@ def setup_file():
 def initialize(ctx: typer.Context):
 
     if ctx.invoked_subcommand is None:
-        show()
+        lists()
 
 
 def main():

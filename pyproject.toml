@@ -1,14 +1,14 @@
 [project]
 name="listen-ytx"
 version = "0.1.1"
-description = "Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intutive commands that feels like natural language."
+description = "Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intuitive commands that feels like natural language."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.7"
 license = { text = "MIT" }
 authors = [
   { name = "Aryan Kalra", email = "aryan.kalra363@gmail.com" }
 ]
-keywords = ["listen", "todo-list", "terminal", "rich", "python","cli","task-manager"]
+keywords = ["listen", "todo-list", "terminal", "rich","typer", "python","cli","task-manager"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.7",
