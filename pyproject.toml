@@ -1,0 +1,38 @@
+[project]
+name="listen-ytx"
+version = "0.1.1"
+description = "Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intutive commands that feels like natural language."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.7"
+license = { text = "MIT" }
+authors = [
+  { name = "Aryan Kalra", email = "aryan.kalra363@gmail.com" }
+]
+keywords = ["listen", "todo-list", "terminal", "rich", "python","cli","task-manager"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "markdown-it-py==3.0.0",
+  "mdurl==0.1.2",
+  "Pygments==2.19.2",
+  "rich==14.0.0",
+  "typer==0.16.0",
+  "typing_extensions==4.14.0",
+  "shellingham==1.5.4",
+  "pyfiglet"
+]
+
+[project.urls]
+Homepage = "https://github.com/A-ryan-Kalra/listen-ytx"
+
+[project.scripts]
+listen = "listen_ytx.listen:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

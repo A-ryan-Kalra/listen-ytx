@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: listen-ytx
+Version: 0.1.1
+Summary: Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intutive commands that feels like natural language.
+Author-email: Aryan Kalra <aryan.kalra363@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/A-ryan-Kalra/listen-ytx
+Keywords: listen,todo-list,terminal,rich,python,cli,task-manager
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: markdown-it-py==3.0.0
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: Pygments==2.19.2
+Requires-Dist: rich==14.0.0
+Requires-Dist: typer==0.16.0
+Requires-Dist: typing_extensions==4.14.0
+Requires-Dist: shellingham==1.5.4
+Requires-Dist: pyfiglet
+Dynamic: license-file
+
+<div align='center'>
+  
+# listen-ytx 🗣️📝
+
+### Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intutive commands that feels like natural language.
+
+</div>

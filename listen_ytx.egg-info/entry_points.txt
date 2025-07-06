@@ -1,0 +1,2 @@
+[console_scripts]
+listen = listen_ytx.listen:main
