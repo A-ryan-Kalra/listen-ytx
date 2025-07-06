@@ -14,7 +14,7 @@ app = typer.Typer()
 console = Console()
 
 STYLE_SUCCESS = "#efefef bold on green"
-STYLE_WARNING = "#efefef on dark_blue"
+STYLE_WARNING = "bold magenta on grey11"
 STYLE_NORMAL = "green on black"
 
 
@@ -85,12 +85,12 @@ def show() -> None:
     for index, task in enumerate(all_tasks, 1):
         if task["status"] == "pending":
             task_no = f"[red]{index}[/]"
-            task_name = f"[red]{task["name"]}[/]"
+            task_name = f"[red bold]{task["name"]}[/]"
             task_status = f"[red]❌[/]"
             table.add_row(task_no, task_name, task_status)
         else:
             task_no = f"[green]{index}[/]"
-            task_name = f"[green]{task["name"]}[/]"
+            task_name = f"[green bold]{task["name"]}[/]"
             task_status = f"[green]✅[/]"
             table.add_row(task_no, task_name, task_status)
 
@@ -102,7 +102,10 @@ def move(old_index: int, new_index: int) -> None:
     old_index, new_index = old_index - 1, new_index - 1
 
     if len(config["tasks"]) == 0:
-        center_print("Oops, the list is empty", style=STYLE_WARNING)
+        center_print(
+            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            style=STYLE_WARNING,
+        )
         return
 
     elif is_valid_index(old_index) and is_valid_index(new_index):
@@ -132,7 +135,10 @@ def move(old_index: int, new_index: int) -> None:
 def do(index: int) -> None:
     index = index - 1
     if len(config["tasks"]) == 0:
-        center_print("Oops, the list is empty.", style=STYLE_WARNING)
+        center_print(
+            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            style=STYLE_WARNING,
+        )
         return
 
     if is_valid_index(index):
@@ -158,7 +164,10 @@ def do(index: int) -> None:
 def undo(index: int) -> None:
     index = index - 1
     if config["tasks"] == 0:
-        center_print("Oops, the list is empty", style=STYLE_WARNING)
+        center_print(
+            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            style=STYLE_WARNING,
+        )
         return
     elif is_valid_index(index):
         if config["tasks"][index]["status"] == "pending":
@@ -195,7 +204,10 @@ def remove(index: int) -> None:
     index = index - 1
 
     if len(config["tasks"]) == 0:
-        center_print("Oops, the list is empty.", style=STYLE_WARNING)
+        center_print(
+            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            style=STYLE_WARNING,
+        )
 
     elif not is_valid_index(index):
         print(f"Please select a valid number between (1 - {len(config["tasks"])})")
@@ -205,6 +217,25 @@ def remove(index: int) -> None:
         )
         del config["tasks"][index]
         write_config(config)
+        show()
+
+
+@app.command(short_help="Update a specific task in the list.")
+def update(index: int, text: str) -> None:
+    index = index - 1
+
+    if len(config["tasks"]) == 0:
+        center_print(
+            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            style=STYLE_WARNING,
+        )
+        return
+    if not is_valid_index(index):
+        print(f"Please select a valid number between (1 - {len(config["tasks"])})")
+    else:
+        config["tasks"][index]["name"] = text
+        write_config(config)
+        center_print("Task Updated!", style="#9e9c9c on green", wrap=True)
         show()
 
 
@@ -227,7 +258,10 @@ def clearall():
         write_config(config)
 
     else:
-        # center_print("Oops, the list is empty.", style=STYLE_WARNING)
+        # center_print(
+        #     "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+        #     style=STYLE_WARNING,
+        # )
         show()
 
 
