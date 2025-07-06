@@ -127,8 +127,7 @@ def show() -> None:
             task_name = f"[green bold]{task["name"]}[/]"
             task_status = f"[green]✅[/]"
             table.add_row(task_no, task_name, task_status)
-    #
-    # greet_user()
+
     center_print(table)
 
 
@@ -378,7 +377,6 @@ def setup_file():
 def initialize(ctx: typer.Context):
 
     if ctx.invoked_subcommand is None:
-        # greet_user()
         show()
 
 
