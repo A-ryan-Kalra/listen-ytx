@@ -11,7 +11,7 @@
 # Contents
 
 - [💎 Features](#-features)
-  - [ 🚀 Key Functionalities](# 🚀 Key Functionalities)
+  - [ 🚀 Key Functionalities](#-add-remove-and-mark-tasks-as-done)
 - [👨‍💻 Commands](#-commands)
 - [🚀 Installation](#-installation)
 - [🚮 Uninstalling](#-uninstalling)
