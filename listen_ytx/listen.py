@@ -9,11 +9,12 @@ from rich import print
 import shutil
 from rich.markdown import Markdown
 from datetime import datetime
+from functools import wraps
 
 app = typer.Typer()
 console = Console()
 
-STYLE_SUCCESS = "#efefef bold on green"
+STYLE_SUCCESS = "bold green on #FFFDD0"
 STYLE_WARNING = "bold magenta on grey11"
 STYLE_NORMAL = "green on black"
 
@@ -40,6 +41,7 @@ def center_print(text, wrap: bool = False, style=None, justify=None):
             style=style,
             width=width,
         ),
+        style=style,
         justify=justify,
     )
 
@@ -48,6 +50,33 @@ def read_config() -> None:
     global config
     with open(config_file_path) as r_file:
         config = json.load(r_file)
+
+
+def greet_user(func):
+    """
+    Decorator that prints a personalized greeting banner before executing any function.
+    """
+
+    @wraps(func)
+    def show_message(*args, **kwargs):
+        now = datetime.now()
+        try:
+            username = re.split(r"[ _-]", config["username"])[0]
+            formatted = now.strftime(config["timezone"])
+        except:
+            username = "User"
+            formatted = now.strftime("%d-%B-%Y | %H:%M %Z")
+
+        os.system("cls" if os.name == "nt" else "clear")
+        console.rule(
+            f"[yellow bold] Hey [magenta bold]{username}![/] It's [yellow bold]{formatted}[/][/] ",
+            style="yellow bold",
+            align="center",
+        )
+        print()
+        return func(*args, **kwargs)
+
+    return show_message
 
 
 @app.command(short_help="Show all the tasks.")
@@ -98,19 +127,22 @@ def show() -> None:
             task_name = f"[green bold]{task["name"]}[/]"
             task_status = f"[green]✅[/]"
             table.add_row(task_no, task_name, task_status)
-    os.system("cls" if os.name == "nt" else "clear")
-    greet_user()
+    #
+    # greet_user()
     center_print(table)
 
 
 @app.command(short_help="Replace the old position of the task with the new one.")
+@greet_user
 def move(old_index: int, new_index: int) -> None:
+
     old_index, new_index = old_index - 1, new_index - 1
 
     if len(config["tasks"]) == 0:
         center_print(
-            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            "Oops, the list is empty.\nUse [green]'add'[/] to add a new task to the lists. 📝",
             style=STYLE_WARNING,
+            justify="center",
         )
         return
 
@@ -127,7 +159,7 @@ def move(old_index: int, new_index: int) -> None:
                 config["tasks"][old_index],
             )
             write_config(config)
-            center_print("Task Updated!", style="#9e9c9c on green", wrap=True)
+            center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
 
             show()
     else:
@@ -138,26 +170,27 @@ def move(old_index: int, new_index: int) -> None:
 
 
 @app.command(short_help="Complete a task by its number.")
+@greet_user
 def do(index: int) -> None:
+
     index = index - 1
     if len(config["tasks"]) == 0:
         center_print(
-            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            "Oops, the list is empty.\nUse [green]'add'[/] to add a new task to the lists. 📝",
             style=STYLE_WARNING,
+            justify="center",
         )
         return
 
     if is_valid_index(index):
         if config["tasks"][index]["status"] == "completed":
-            center_print(
-                "Task is already completed!", style="#9e9c9c on green", wrap=True
-            )
+            center_print("Task is already completed!", style=STYLE_SUCCESS, wrap=True)
             show()
 
         else:
             config["tasks"][index]["status"] = "completed"
             write_config(config)
-            center_print("Task Updated!", style="#9e9c9c on green", wrap=True)
+            center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
             show()
     else:
         center_print(
@@ -167,23 +200,25 @@ def do(index: int) -> None:
 
 
 @app.command(short_help="Undo a task by its number.")
+@greet_user
 def undo(index: int) -> None:
+
     index = index - 1
     if config["tasks"] == 0:
         center_print(
-            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            "Oops, the list is empty.\nUse [green]'add'[/] to add a new task to the lists. 📝",
             style=STYLE_WARNING,
+            justify="center",
         )
         return
     elif is_valid_index(index):
         if config["tasks"][index]["status"] == "pending":
-            center_print(
-                "The task is already pending.", style="#9e9c9c on green", wrap=True
-            )
+            center_print("The task is already pending.", style=STYLE_SUCCESS, wrap=True)
+            show()
         else:
             config["tasks"][index]["status"] = "pending"
             write_config(config)
-            center_print("Task Updated!", style="#9e9c9c on green", wrap=True)
+            center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
             show()
 
     else:
@@ -194,7 +229,9 @@ def undo(index: int) -> None:
 
 
 @app.command(short_help="Add a new task.")
+@greet_user
 def add(data: str) -> None:
+    #
     center_print(
         f"[green bold]'{data}'[/] [blue]added to the list![/]",
         wrap=True,
@@ -206,17 +243,23 @@ def add(data: str) -> None:
 
 
 @app.command(short_help="Delete a task.")
+@greet_user
 def remove(index: int) -> None:
+
     index = index - 1
 
     if len(config["tasks"]) == 0:
         center_print(
-            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            "Oops, the list is empty.\nUse [green]'add'[/] to add a new task to the lists. 📝",
             style=STYLE_WARNING,
+            justify="center",
         )
 
     elif not is_valid_index(index):
-        print(f"Please select a valid number between (1 - {len(config["tasks"])})")
+        center_print(
+            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            style=STYLE_WARNING,
+        )
     else:
         center_print(
             f"[blue]Deleted[/] [red]'{config["tasks"][index]['name']}'[/]",
@@ -227,26 +270,40 @@ def remove(index: int) -> None:
 
 
 @app.command(short_help="Update a specific task in the list.")
+@greet_user
 def update(index: int, text: str) -> None:
-    index = index - 1
 
-    if len(config["tasks"]) == 0:
+    index = index - 1
+    if not text.strip():
         center_print(
-            "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
+            "Text is missing",
             style=STYLE_WARNING,
         )
         return
+
+    if len(config["tasks"]) == 0:
+        center_print(
+            "Oops, the list is empty.\nUse [green]'add'[/] to add a new task to the lists. 📝",
+            style=STYLE_WARNING,
+            justify="center",
+        )
+        return
     if not is_valid_index(index):
-        print(f"Please select a valid number between (1 - {len(config["tasks"])})")
+        center_print(
+            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            style=STYLE_SUCCESS,
+        )
     else:
         config["tasks"][index]["name"] = text
         write_config(config)
-        center_print("Task Updated!", style="#9e9c9c on green", wrap=True)
+        center_print("Task Updated!", style=STYLE_SUCCESS, wrap=True)
         show()
 
 
 @app.command(short_help="Change Your Name")
+@greet_user
 def callme(name: str) -> None:
+
     config["username"] = name
     write_config(config)
     center_print(
@@ -256,12 +313,14 @@ def callme(name: str) -> None:
 
 
 @app.command(short_help="Clear all the tasks")
+@greet_user
 def clearall():
 
     if len(config["tasks"]) != 0:
         config["tasks"].clear()
         center_print("🧹💨 Cleared all tasks.", style=STYLE_WARNING)
         write_config(config)
+        show()
 
     else:
         show()
@@ -314,23 +373,12 @@ def setup_file():
     )
 
 
-def greet_user():
-    username = re.split(r"[ _-]", config["username"])[0]
-    now = datetime.now()
-    formatted = now.strftime(config["timezone"])
-
-    console.rule(
-        f"[yellow bold] Hey [magenta bold]{username}![/] It's [yellow bold]{formatted}[/][/] ",
-        style="yellow bold",
-        align="center",
-    )
-
-
 @app.callback(invoke_without_command=True)
+@greet_user
 def initialize(ctx: typer.Context):
 
     if ctx.invoked_subcommand is None:
-        greet_user()
+        # greet_user()
         show()
 
 
