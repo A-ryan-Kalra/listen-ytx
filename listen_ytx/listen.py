@@ -33,7 +33,7 @@ def center_print(text, wrap: bool = False, style=None, justify=None):
         width = shutil.get_terminal_size().columns // 2
     else:
         width = shutil.get_terminal_size().columns
-    # os.system("cls" if os.name == "nt" else "clear")
+
     console.print(
         Align.center(
             text,
@@ -98,7 +98,8 @@ def show() -> None:
             task_name = f"[green bold]{task["name"]}[/]"
             task_status = f"[green]✅[/]"
             table.add_row(task_no, task_name, task_status)
-
+    os.system("cls" if os.name == "nt" else "clear")
+    greet_user()
     center_print(table)
 
 
@@ -281,13 +282,13 @@ def setup_file():
         justify="center",
     )
     config["username"] = input(
-        "\nHey there! 👋😁\nBefore we proceed, let's start with your name. What should I call you?\n\n"
+        "\nHey there! 👋😁\nBefore we proceed, let's start with your name. What should I call you?\n> "
     )
     console.print("\nThank you for letting me know your name!", style="yellow")
 
     while True:
         choice = input(
-            "\nWhich time format would you like to use (1/2)?\n[1] 12-hour (e.g., 02:30 PM)\n[2] 24-hour (e.g., 14:30)\n"
+            "\nWhich time format would you like to use (1/2)?\n[1] 12-hour (e.g., 02:30 PM)\n[2] 24-hour (e.g., 14:30)\n> "
         )
         if choice == "1":
             formatted = "%d-%B-%Y | %I:%M %p"
