@@ -8,13 +8,25 @@
 
 <br/>
 
+# Contents
+
+- [💎 Features](#-features)
+  - [ 🚀 Key Functionalities](# 🚀 Key Functionalities)
+- [👨‍💻 Commands](#-commands)
+- [🚀 Installation](#-installation)
+- [🚮 Uninstalling](#-uninstalling)
+
+<br/>
+
+<br/>
+
 ## 💎 Features
 
-- 📌 Add, remove, and mark tasks as done.
-- 🧾 Clean, readable output.
-- 📂 Persist tasks between sessions, leveraging streams; storing data into json file in the root directory.
+- #### 📌 Add, remove, and mark tasks as done.
+- #### 🧾 Clean, readable output.
+- #### 📂 Persist tasks between sessions, leveraging streams; storing data into json file in the root directory.
 
-Just "tell" it what to do:
+#### Just "tell" it what to do:
 
 > [!TIP]
 > listen add "Go for shopping"      
