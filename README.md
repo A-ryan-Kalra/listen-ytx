@@ -18,13 +18,14 @@
 
 <br/>
 
-<br/>
-
 ## 💎 Features
 
 - #### 📌 Add, remove, and mark tasks as done.
 - #### 🧾 Clean, readable output.
 - #### 📂 Persist tasks between sessions, leveraging streams; storing data into json file in the root directory.
+
+<br/>
+ 
 
 #### Just "tell" it what to do:
 
