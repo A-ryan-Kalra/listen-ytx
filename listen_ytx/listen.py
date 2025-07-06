@@ -398,11 +398,10 @@ def setup_file():
 
     console.print(
         "> If you wish to change your name later, you can type:",
-        style="bold grey11",
+        style="bold white",
     )
     console.print(
         '> [bold green]listen callme "Your-Name" [/bold green]',
-        style="bold grey11",
     )
 
     console.print(
