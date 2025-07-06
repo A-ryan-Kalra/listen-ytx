@@ -27,7 +27,7 @@ def is_valid_index(index):
     return 0 <= index < len(config["tasks"])
 
 
-def center_print(text, wrap: bool = False, style=None):
+def center_print(text, wrap: bool = False, style=None, justify=None):
 
     if wrap:
         width = shutil.get_terminal_size().columns // 2
@@ -40,6 +40,7 @@ def center_print(text, wrap: bool = False, style=None):
             style=style,
             width=width,
         ),
+        justify=justify,
     )
 
 
@@ -79,7 +80,11 @@ def show() -> None:
 
     if len(all_tasks) == 0:
         center_print(table)
-        center_print("\n[#40c132]Good job, your list is empty... 😄[/]", wrap=True)
+        center_print(
+            "\n[#40c132]Good job, your list is empty... 😄[/]\n[cyan bold]Try adding more to your list.📝[/]",
+            wrap=True,
+            justify="center",
+        )
         return
 
     for index, task in enumerate(all_tasks, 1):
@@ -270,10 +275,36 @@ def setup_file():
 
     config = {}
     config["tasks"] = []
-    config["username"] = input("\nHey there 👋🏻😁, What should I call you?\n")
-    config["init_setup_done"] = True
-    write_config(config)
+    center_print(
+        "Welcome to listen-ytx\n[magenta]Your only task manager![/] 📝",
+        style="bold #FFFDD0 on black",
+        justify="center",
+    )
+    config["username"] = input(
+        "\nHey there! 👋😁\nBefore we proceed, let's start with your name. What should I call you?\n\n"
+    )
     console.print("\nThank you for letting me know your name!", style="yellow")
+
+    while True:
+        choice = input(
+            "\nWhich time format would you like to use (1/2)?\n[1] 12-hour (e.g., 02:30 PM)\n[2] 24-hour (e.g., 14:30)\n"
+        )
+        if choice == "1":
+            formatted = "%d-%B-%Y | %I:%M %p"
+
+            break
+        elif choice == "2":
+            formatted = "%d-%B-%Y | %H:%M %Z"
+            break
+        else:
+            console.print("\nInvalid choice\n")
+    console.print("\nThat's great!\n", style="yellow")
+
+    config["timezone"] = formatted
+    config["init_setup_done"] = True
+
+    write_config(config)
+
     # print("")
     MARKDOWN = r"""
 > If you wish to change your name later, you can type:  
@@ -292,19 +323,23 @@ def setup_file():
     # print(__location__)
 
 
+def greet_user():
+    username = re.split(r"[ _-]", config["username"])[0]
+    now = datetime.now()
+    formatted = now.strftime(config["timezone"])
+
+    console.rule(
+        f"[yellow bold] Hey [magenta bold]{username}![/] It's [yellow bold]{formatted}[/][/] ",
+        style="yellow bold",
+        align="center",
+    )
+
+
 @app.callback(invoke_without_command=True)
 def initialize(ctx: typer.Context):
 
     if ctx.invoked_subcommand is None:
-        username = re.split(r"[ _-]", config["username"])[0]
-        now = datetime.now()
-        formatted = now.strftime("%d-%B-%Y | %I:%M %p")
-
-        console.rule(
-            f"[yellow bold] Hey [magenta bold]{username}![/] It's [yellow bold]{formatted}[/][/] ",
-            style="yellow bold",
-            align="center",
-        )
+        greet_user()
         show()
 
 
