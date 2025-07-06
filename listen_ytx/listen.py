@@ -264,10 +264,6 @@ def clearall():
         write_config(config)
 
     else:
-        # center_print(
-        #     "Oops, the list is empty. Use [green]'add'[/] to create a new task.",
-        #     style=STYLE_WARNING,
-        # )
         show()
 
 
@@ -299,6 +295,7 @@ def setup_file():
             break
         else:
             console.print("\nInvalid choice\n")
+
     console.print("\nThat's great!\n", style="yellow")
 
     config["timezone"] = formatted
@@ -306,7 +303,6 @@ def setup_file():
 
     write_config(config)
 
-    # print("")
     MARKDOWN = r"""
 > If you wish to change your name later, you can type:  
 > `listen callme <Your-Name>`
@@ -316,12 +312,6 @@ def setup_file():
     console.print(
         "\nPlease type [cyan bold]'listen'[/] to fetch your list.\n", style=""
     )
-
-    # initialize()
-    # __location__ = os.path.dirname(os.path.realpath(__file__))
-
-    # config["location"] = __location__
-    # print(__location__)
 
 
 def greet_user():
@@ -342,9 +332,6 @@ def initialize(ctx: typer.Context):
     if ctx.invoked_subcommand is None:
         greet_user()
         show()
-
-
-# else:
 
 
 def main():
