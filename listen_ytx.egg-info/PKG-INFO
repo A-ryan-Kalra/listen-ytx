@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: listen-ytx
-Version: 0.1.6
+Version: 0.1.8
 Summary: Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intuitive commands that feels like natural language.
 Author-email: Aryan Kalra <aryan.kalra363@gmail.com>
 License: MIT
@@ -30,6 +30,9 @@ Dynamic: license-file
 
 #### Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intutive commands that feels like natural language.
 
+<video src="https://github.com/user-attachments/assets/77903333-37d9-4f88-9d99-385dbee61288" autoplay muted loop />
+
+
 </div>
 
 <br/>
@@ -51,21 +54,21 @@ Dynamic: license-file
 - ##### 📂 Persist tasks between sessions, leveraging streams; storing data into json file in the root directory.
 
 <br/>
- 
+
 
 ##### Just "tell" it what to do:
 
 > [!TIP]
-> listen add "Go for shopping"      
+> listen add "Go for shopping"  
 > `add task to the list`
-> 
-> listen show                      
+>
+> listen show  
 > `show all the tasks`
 >
-> listen done 2                   
+> listen done 2  
 > `mark 2nd task as done`
-> 
-> listen remove 1               
+>
+> listen remove 1  
 > `remove 2nd task from the lists`
 
 🧠 No clutter. No distractions. Just type and track.
@@ -73,6 +76,7 @@ Dynamic: license-file
 <br/>
 
 ## 👨‍💻 Commands
+
 ```bash
 listen
 # Greets user with name and time,showing all the current task to do.
@@ -95,16 +99,19 @@ listen edit <Task-Number> "Edit-Task"
 listen lists
 # List all tasks.
 
-listen swap <Old-Number> <New-Number> 
+listen swap <Old-Number> <New-Number>
 # Swap the position of the old task with the new one.
 
-listen move <Old-Number> <New-Number> 
+listen move <Old-Number> <New-Number>
 # Move a task to a specific position in the lists.
 
-listen callme "New Name" 
+listen callme "New Name"
 # Change your name.
 
-listen clearall 
+listen changetimeformat
+# Change time format.
+
+listen clearall
 # Clear all the tasks.
 ```
 
@@ -131,6 +138,7 @@ Open your terminal and type:
 ```bash
 pip uninstall arcade-ytx
 ```
+
 `(Optional)`
 and also remove the listen-ytx directory located in the .config directory in the root folder.
 
