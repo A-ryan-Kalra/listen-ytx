@@ -44,6 +44,7 @@ def center_print(text, wrap: bool = False, style=None, justify=None):
         style=style,
         justify=justify,
     )
+    print()
 
 
 def read_config() -> None:
