@@ -25,21 +25,21 @@
 - ##### 📂 Persist tasks between sessions, leveraging streams; storing data into json file in the root directory.
 
 <br/>
- 
+
 
 ##### Just "tell" it what to do:
 
 > [!TIP]
-> listen add "Go for shopping"      
+> listen add "Go for shopping"  
 > `add task to the list`
-> 
-> listen show                      
+>
+> listen show  
 > `show all the tasks`
 >
-> listen done 2                   
+> listen done 2  
 > `mark 2nd task as done`
-> 
-> listen remove 1               
+>
+> listen remove 1  
 > `remove 2nd task from the lists`
 
 🧠 No clutter. No distractions. Just type and track.
@@ -47,6 +47,7 @@
 <br/>
 
 ## 👨‍💻 Commands
+
 ```bash
 listen
 # Greets user with name and time,showing all the current task to do.
@@ -69,16 +70,19 @@ listen edit <Task-Number> "Edit-Task"
 listen lists
 # List all tasks.
 
-listen swap <Old-Number> <New-Number> 
+listen swap <Old-Number> <New-Number>
 # Swap the position of the old task with the new one.
 
-listen move <Old-Number> <New-Number> 
+listen move <Old-Number> <New-Number>
 # Move a task to a specific position in the lists.
 
-listen callme "New Name" 
+listen callme "New Name"
 # Change your name.
 
-listen clearall 
+listen changetimeformat
+# Change time format.
+
+listen clearall
 # Clear all the tasks.
 ```
 
@@ -105,6 +109,7 @@ Open your terminal and type:
 ```bash
 pip uninstall arcade-ytx
 ```
+
 `(Optional)`
 and also remove the listen-ytx directory located in the .config directory in the root folder.
 

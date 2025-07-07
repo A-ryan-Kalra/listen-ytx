@@ -363,7 +363,11 @@ def clearall():
 
 @app.command(short_help="Change Time Format.")
 @greet_user
-def changetimeformat():
+def changetimeformat(data=None) -> None:
+    # global config
+
+    if data is None:
+        data = config
     while True:
         choice = input(
             "\nWhich time format would you like to use (1/2)?\n[1] 12-hour (e.g., 02:30 PM)\n[2] 24-hour (e.g., 14:30)\n> "
@@ -378,10 +382,13 @@ def changetimeformat():
         else:
             console.print("\nInvalid choice\n")
 
-    console.print("\nThat's great!\n", style="yellow")
+    console.print(
+        "\nThat's great!\nIt will be used as a default time format starting today.\n",
+        style="yellow",
+    )
 
-    config["timezone"] = formatted
-    write_config(config)
+    data["timezone"] = formatted
+    write_config(data)
 
 
 @app.command(short_help="Reset all and initialize new setup.")
@@ -399,7 +406,7 @@ def setup_file():
     )
     console.print("\nThank you for letting me know your name!", style="yellow bold")
 
-    changetimeformat()
+    changetimeformat(config)
     config["init_setup_done"] = True
 
     write_config(config)
