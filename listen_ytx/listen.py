@@ -120,12 +120,12 @@ def lists() -> None:
     for index, task in enumerate(all_tasks, 1):
         if task["status"] == "pending":
             task_no = f"[red]{index}[/]"
-            task_name = f"[red bold]{task["name"]}[/]"
+            task_name = f"[red bold]{task['name']}[/]"
             task_status = f"[red]❌[/]"
             table.add_row(task_no, task_name, task_status)
         else:
             task_no = f"[green]{index}[/]"
-            task_name = f"[green bold]{task["name"]}[/]"
+            task_name = f"[green bold]{task['name']}[/]"
             task_status = f"[green]✅[/]"
             table.add_row(task_no, task_name, task_status)
 
@@ -164,7 +164,7 @@ def swap(old_index: int, new_index: int) -> None:
             lists()
     else:
         center_print(
-            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            f"Please select a valid number between (1 - {len(config['tasks'])})",
             style=STYLE_WARNING,
         )
 
@@ -199,7 +199,7 @@ def move(old_index: int, new_index: int) -> None:
             lists()
     else:
         center_print(
-            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            f"Please select a valid number between (1 - {len(config['tasks'])})",
             style=STYLE_WARNING,
         )
 
@@ -229,7 +229,7 @@ def do(index: int) -> None:
             lists()
     else:
         center_print(
-            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            f"Please select a valid number between (1 - {len(config['tasks'])})",
             style=STYLE_WARNING,
         )
 
@@ -258,7 +258,7 @@ def undo(index: int) -> None:
 
     else:
         center_print(
-            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            f"Please select a valid number between (1 - {len(config['tasks'])})",
             style=STYLE_WARNING,
         )
 
@@ -292,12 +292,12 @@ def remove(index: int) -> None:
 
     elif not is_valid_index(index):
         center_print(
-            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            f"Please select a valid number between (1 - {len(config['tasks'])})",
             style=STYLE_WARNING,
         )
     else:
         center_print(
-            f"[blue]Deleted[/] [red]'{config["tasks"][index]['name']}'[/]",
+            f"[blue]Deleted[/] [red]'{config['tasks'][index]['name']}'[/]",
         )
         del config["tasks"][index]
         write_config(config)
@@ -325,7 +325,7 @@ def edit(index: int, text: str) -> None:
         return
     if not is_valid_index(index):
         center_print(
-            f"Please select a valid number between (1 - {len(config["tasks"])})",
+            f"Please select a valid number between (1 - {len(config['tasks'])})",
             style=STYLE_SUCCESS,
         )
     else:
