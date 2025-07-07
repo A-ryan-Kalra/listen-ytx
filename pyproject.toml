@@ -1,6 +1,6 @@
 [project]
 name="listen-ytx"
-version = "0.1.8"
+version = "0.1.9"
 description = "Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intuitive commands that feels like natural language."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.7"
