@@ -105,7 +105,7 @@ def lists() -> None:
     table.add_column(
         "Status",
         style="magenta",
-        justify="center",
+        justify="left",
     )
 
     if len(all_tasks) == 0:
@@ -361,21 +361,9 @@ def clearall():
         lists()
 
 
-@app.command(short_help="Reset all and initialize new setup.")
-def setup_file():
-
-    config = {}
-    config["tasks"] = []
-    center_print(
-        "Welcome to listen-ytx\n[magenta]Your only task manager![/] 📝",
-        style="bold #FFFDD0 on grey11",
-        justify="center",
-    )
-    config["username"] = input(
-        "\nHey there! 👋😁\nBefore we proceed, let's start with your name. What should I call you?\n> "
-    )
-    console.print("\nThank you for letting me know your name!", style="yellow bold")
-
+@app.command(short_help="Change Time Format.")
+@greet_user
+def changetimeformat():
     while True:
         choice = input(
             "\nWhich time format would you like to use (1/2)?\n[1] 12-hour (e.g., 02:30 PM)\n[2] 24-hour (e.g., 14:30)\n> "
@@ -393,6 +381,25 @@ def setup_file():
     console.print("\nThat's great!\n", style="yellow")
 
     config["timezone"] = formatted
+    write_config(config)
+
+
+@app.command(short_help="Reset all and initialize new setup.")
+def setup_file():
+
+    config = {}
+    config["tasks"] = []
+    center_print(
+        "Welcome to listen-ytx\n[magenta]Your only task manager![/] 📝",
+        style="bold #FFFDD0 on grey11",
+        justify="center",
+    )
+    config["username"] = input(
+        "\nHey there! 👋😁\nBefore we proceed, let's start with your name. What should I call you?\n> "
+    )
+    console.print("\nThank you for letting me know your name!", style="yellow bold")
+
+    changetimeformat()
     config["init_setup_done"] = True
 
     write_config(config)

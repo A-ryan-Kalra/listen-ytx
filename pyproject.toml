@@ -1,6 +1,6 @@
 [project]
 name="listen-ytx"
-version = "0.1.4"
+version = "0.1.6"
 description = "Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intuitive commands that feels like natural language."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.7"
@@ -29,7 +29,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/A-ryan-Kalra/listen-ytx"
-repository="https://github.com/A-ryan-Kalra"
+Repository="https://github.com/A-ryan-Kalra"
 
 [project.scripts]
 listen = "listen_ytx.listen:main"
