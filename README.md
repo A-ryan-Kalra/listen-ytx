@@ -2,7 +2,7 @@
   
 # listen-ytx 🗣️📝
 
-#### Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intutive commands that feels like natural language.
+#### Listen is a sleek, command-line-fist to-do list📝 manager built for powerful users. It lets you manage you daily task directly from the CLI with intuitive commands that feels like natural language.
 
 <video src="https://github.com/user-attachments/assets/77903333-37d9-4f88-9d99-385dbee61288" autoplay muted loop />
 
