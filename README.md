@@ -97,7 +97,7 @@ Make sure you have Python 3.7+ installed.
 
 ```bash
 pip3 install listen-ytx
-# If you see an error saying 'pip not found', just replace 'pip3' with 'pip'.
+# If you see an error saying 'pip3 not found', just replace 'pip3' with 'pip'.
 
 listen
 # run this command to begin the game.
