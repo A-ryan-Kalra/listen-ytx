@@ -96,8 +96,8 @@ listen clearall
 Make sure you have Python 3.7+ installed.
 
 ```bash
-pip install listen-ytx
-# If you see an error saying 'pip not found', just replace 'pip' with 'pip3'.
+pip3 install listen-ytx
+# If you see an error saying 'pip not found', just replace 'pip3' with 'pip'.
 
 listen
 # run this command to begin the game.
