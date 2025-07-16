@@ -39,7 +39,7 @@
 > listen show  
 > `show all the tasks`
 >
-> listen done 2  
+> listen do 2  
 > `mark 2nd task as done`
 >
 > listen remove 1  
